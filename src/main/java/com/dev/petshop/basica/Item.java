@@ -1,21 +1,27 @@
 package com.dev.petshop.basica;
 
 import java.math.BigDecimal;
+import java.util.List;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
-public class Carrinho {
+@Entity
+public class Item {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	private int produtoId;
-	private int vendaId;
+	
+	@OneToMany
+	private List<Produto> produto;
+
 	private int quantidade;
 	private BigDecimal precoUnit;
 	
-	public Carrinho() {}
+	public Item() {}
 
 	public int getId() {
 		return id;
@@ -25,20 +31,12 @@ public class Carrinho {
 		this.id = id;
 	}
 
-	public int getProdutoId() {
-		return produtoId;
+	public List<Produto> getProduto() {
+		return produto;
 	}
 
-	public void setProdutoId(int produtoId) {
-		this.produtoId = produtoId;
-	}
-
-	public int getVendaId() {
-		return vendaId;
-	}
-
-	public void setVendaId(int vendaId) {
-		this.vendaId = vendaId;
+	public void setProduto(List<Produto> produto) {
+		this.produto = produto;
 	}
 
 	public int getQuantidade() {

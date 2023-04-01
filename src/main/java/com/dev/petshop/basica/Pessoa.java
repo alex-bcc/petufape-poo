@@ -2,15 +2,21 @@ package com.dev.petshop.basica;
 
 import java.time.Instant;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 
+@Entity
 public abstract class Pessoa {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	
+	@OneToOne
 	private Endereco endereco;
+	
 	private String tipo; 
 	private String nome;
 	private Instant dataNascimento;

@@ -2,34 +2,35 @@ package cadastro;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.dev.petshop.basica.Usuario;
 
-import repositorio.RepositorioUsuario;
+import colecao.ColecaoUsuario;
 
-public class CadastroUsuario {
-	private RepositorioUsuario repositorioUsuario;
+@Service
+public class CadastroUsuario implements InterfaceUsuario {
+	@Autowired
+	private ColecaoUsuario colecaoUsuario;
 	
-	public CadastroUsuario(RepositorioUsuario repositorioUsuario) {
-		this.repositorioUsuario = repositorioUsuario;
-	}
-	
-	public RepositorioUsuario getRepositorioUsuario() {
-		return repositorioUsuario;
-	}
-
-	public void setRepositorioUsuario(RepositorioUsuario repositorioUsuario) {
-		this.repositorioUsuario = repositorioUsuario;
-	}
-
+	@Override
 	public Usuario procurarUsuario(String email) {
-		return repositorioUsuario.procurarUsuario(email);
+		return colecaoUsuario.findByEmail(email);
 	}
 	
-	public List<Usuario> listarUsuario() {
-		return repositorioUsuario.listarUsuario();
+	@Override
+	public void deletarUsuario(String email) {
+		colecaoUsuario.delete(colecaoUsuario.findByEmail(email));
 	}
 
-	public void atualizarUsuario(Usuario c) {
-		repositorioUsuario.atualizarUsuario(c);
+	@Override
+	public Usuario salvarUsuario(Usuario entity) {
+		return colecaoUsuario.save(entity);
+	}
+
+	@Override
+	public List<Usuario> listarUsuario() {
+		return colecaoUsuario.findAll();
 	}
 }

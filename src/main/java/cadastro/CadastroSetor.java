@@ -2,35 +2,36 @@ package cadastro;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.dev.petshop.basica.Setor;
 
-import repositorio.RepositorioSetor;
+import colecao.ColecaoSetor;
 
 
-public class CadastroSetor {
-private RepositorioSetor repositorioSetor;
+@Service
+public class CadastroSetor implements InterfaceSetor{
+	@Autowired
+	private ColecaoSetor colecaoSetor;
 	
-	public CadastroSetor(RepositorioSetor repositorioSetor) {
-		this.repositorioSetor= repositorioSetor;
-	}
-
-	public void cadastrarSetor(Setor a) {
-		repositorioSetor.cadastrarSetor(a);
-	}
-	
-	public Setor procurarSetorId(int id) {
-		return repositorioSetor.procurarSetorId(id);
+	@Override
+	public List<Setor> procurarSetor(String nome){
+		return colecaoSetor.findByNomeContaining(nome);
 	}
 	
-	public void removerSetor(Setor a) {
-		repositorioSetor.removerSetor(a);
+	@Override
+	public void deletarSetor(int id) {
+		colecaoSetor.deleteById(id);
 	}
 
-	public void atualizarSetor(Setor a) {
-		repositorioSetor.atualizarSetor(a);
+	@Override
+	public Setor salvarSetor(Setor entity) {
+		return colecaoSetor.save(entity);
 	}
 
+	@Override
 	public List<Setor> listarSetor() {
-		return repositorioSetor.listarSetor();
+		return colecaoSetor.findAll();
 	}
 }

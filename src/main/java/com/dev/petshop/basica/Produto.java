@@ -3,23 +3,31 @@ package com.dev.petshop.basica;
 import java.math.BigDecimal;
 import java.util.Date;
 
+
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
+@Entity
 public class Produto {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	
+	@ManyToOne
 	private Setor setor;
+	
+	@ManyToOne
+	private Departamento departamento;
+	
 	private String nome;
-	private String marca;
-	private BigDecimal peso;
+	private String descricao;
 	private Date dataCompra;
 	private int estoque;
-	private BigDecimal precoDeCustoUnit;
-	private BigDecimal precoDeCustoTotal;
-	private BigDecimal precoAVista;
+	private BigDecimal preco;
+	
 	
 	public Produto() {}
 
@@ -47,22 +55,6 @@ public class Produto {
 		this.nome = nome;
 	}
 
-	public String getMarca() {
-		return marca;
-	}
-
-	public void setMarca(String marca) {
-		this.marca = marca;
-	}
-
-	public BigDecimal getPeso() {
-		return peso;
-	}
-
-	public void setPeso(BigDecimal peso) {
-		this.peso = peso;
-	}
-
 	public Date getDataCompra() {
 		return dataCompra;
 	}
@@ -79,28 +71,28 @@ public class Produto {
 		this.estoque = estoque;
 	}
 
-	public BigDecimal getPrecoDeCustoUnit() {
-		return precoDeCustoUnit;
+	public Departamento getDepartamento() {
+		return departamento;
 	}
 
-	public void setPrecoDeCustoUnit(BigDecimal precoDeCustoUnit) {
-		this.precoDeCustoUnit = precoDeCustoUnit;
+	public void setDepartamento(Departamento departamento) {
+		this.departamento = departamento;
 	}
 
-	public BigDecimal getPrecoDeCustoTotal() {
-		return precoDeCustoTotal;
+	public BigDecimal getPreco() {
+		return preco;
 	}
 
-	public void setPrecoDeCustoTotal(BigDecimal precoDeCustoTotal) {
-		this.precoDeCustoTotal = precoDeCustoTotal;
+	public void setPreco(BigDecimal preco) {
+		this.preco = preco;
 	}
 
-	public BigDecimal getPrecoAVista() {
-		return precoAVista;
+	public String getDescricao() {
+		return descricao;
 	}
 
-	public void setPrecoAVista(BigDecimal precoAVista) {
-		this.precoAVista = precoAVista;
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
 }
