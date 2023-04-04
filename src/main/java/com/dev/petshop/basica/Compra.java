@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 @Entity
@@ -15,7 +16,7 @@ public class Compra {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@OneToMany
+	@ManyToOne
 	private Usuario usuario;
 	
 	@OneToMany
@@ -47,5 +48,11 @@ public class Compra {
 
 	public void setPrecoTotalDaCompra(BigDecimal precoTotalDaCompra) {
 		this.precoTotalDaCompra = precoTotalDaCompra;
+	}
+	public void calcularTotal() {
+		precoTotalDaCompra = BigDecimal.ZERO;
+		for(Item it: item) {
+			precoTotalDaCompra = precoTotalDaCompra.add(it.calcularSubProduto());
+		}
 	}
 }

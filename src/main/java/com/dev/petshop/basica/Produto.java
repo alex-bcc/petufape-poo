@@ -94,5 +94,12 @@ public class Produto {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
+	public void reporProduto(int quantidade)throws ReporEstoqueException {
+		if(quantidade < 0) {
+			throw new ReporEstoqueException();
+		}else {
+			this.estoque += quantidade;
+		}		
+	}
 
 }

@@ -1,14 +1,15 @@
 package com.dev.petshop.basica;
 
-import java.time.Instant;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.OneToOne;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Pessoa {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,17 +17,14 @@ public abstract class Pessoa {
 	
 	@OneToOne
 	private Endereco endereco;
-	
-	private String tipo; 
+	 
 	private String nome;
-	private Instant dataNascimento;
 	private String email;
 	private String senha;
 	private String telefone;
 	
-	public Pessoa(String nome, Instant dataNascimento, String email, String senha) {
+	public Pessoa(String nome, String email, String senha) {
 		this.nome = nome;
-		this.dataNascimento = dataNascimento;
 		this.email = email;
 		this.senha = senha;
 	}
@@ -48,28 +46,12 @@ public abstract class Pessoa {
 		this.endereco = endereco;
 	}
 
-	public String getTipo() {
-		return tipo;
-	}
-
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
-	}
-
 	public String getNome() {
 		return nome;
 	}
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-
-	public Instant getDataNascimento() {
-		return dataNascimento;
-	}
-
-	public void setDataNascimento(Instant dataNascimento) {
-		this.dataNascimento = dataNascimento;
 	}
 
 	public String getEmail() {

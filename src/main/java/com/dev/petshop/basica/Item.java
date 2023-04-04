@@ -1,13 +1,12 @@
 package com.dev.petshop.basica;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Item {
@@ -15,8 +14,8 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@OneToMany
-	private List<Produto> produto;
+	@ManyToOne
+	private Produto produto;
 
 	private int quantidade;
 	private BigDecimal precoUnit;
@@ -31,11 +30,12 @@ public class Item {
 		this.id = id;
 	}
 
-	public List<Produto> getProduto() {
+	public Produto getProduto() {
 		return produto;
 	}
 
-	public void setProduto(List<Produto> produto) {
+	public void setProduto(Produto produto) {
+		this.precoUnit = produto.getPreco();
 		this.produto = produto;
 	}
 
@@ -53,6 +53,10 @@ public class Item {
 
 	public void setPrecoUnit(BigDecimal precoUnit) {
 		this.precoUnit = precoUnit;
+	}
+	public BigDecimal calcularSubProduto() {
+		return  produto.getPreco().multiply(new BigDecimal(quantidade));
+		
 	}
 
 }
