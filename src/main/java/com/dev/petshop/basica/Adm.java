@@ -9,7 +9,6 @@ public class Adm extends Pessoa {
 	
 	public Adm(String nome, String email, String senha) {
 		super(nome, email, senha);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public Adm() {}

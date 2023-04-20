@@ -21,6 +21,16 @@ public class Item {
 	private BigDecimal precoUnit;
 	
 	public Item() {}
+	
+	public Item(int quantidade, BigDecimal precoUnit,Produto produto) {
+		this.quantidade = quantidade;
+		this.precoUnit = precoUnit;
+		this.produto = produto;
+	}
+	public Item(int quantidade,Produto produto) {
+		this.quantidade = quantidade;
+		this.produto = produto;
+	}
 
 	public int getId() {
 		return id;
@@ -55,8 +65,8 @@ public class Item {
 		this.precoUnit = precoUnit;
 	}
 	public BigDecimal calcularSubProduto() {
-		return  produto.getPreco().multiply(new BigDecimal(quantidade));
-		
+		this.precoUnit =  produto.getPreco().multiply(new BigDecimal(quantidade));
+		return precoUnit;
 	}
 
 }

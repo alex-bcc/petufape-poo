@@ -13,4 +13,8 @@ public interface InterfaceDepartamento {
 	Departamento salvarDepartamento (Departamento entity) throws DepartamentoDuplicadoException ;
 	
 	List<Departamento> listarDepartamento();
+	
+	Departamento procurarDepartamentoUnico(String nome);
+	
+	Departamento procurarDepartamentoId(int id);
 }

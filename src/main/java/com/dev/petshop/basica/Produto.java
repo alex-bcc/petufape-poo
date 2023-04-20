@@ -1,7 +1,6 @@
 package com.dev.petshop.basica;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 
 import jakarta.persistence.Entity;
@@ -24,12 +23,20 @@ public class Produto {
 	
 	private String nome;
 	private String descricao;
-	private Date dataCompra;
 	private int estoque;
 	private BigDecimal preco;
 	
-	
 	public Produto() {}
+	
+	public Produto(String nome, int estoque,BigDecimal preco) {
+		this.nome = nome;
+		this.estoque = estoque;
+		this.preco = preco;
+	}
+	public Produto(String nome, int estoque) {
+		this.nome = nome;
+		this.estoque = estoque;
+	}
 
 	public int getId() {
 		return id;
@@ -53,14 +60,6 @@ public class Produto {
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-
-	public Date getDataCompra() {
-		return dataCompra;
-	}
-
-	public void setDataCompra(Date dataCompra) {
-		this.dataCompra = dataCompra;
 	}
 
 	public int getEstoque() {
@@ -99,6 +98,13 @@ public class Produto {
 			throw new ReporEstoqueException();
 		}else {
 			this.estoque += quantidade;
+		}		
+	}
+	public void reduzirProduto(int quantidade)throws ReduzirEstoqueException {
+		if(quantidade < 0) {
+			throw new ReduzirEstoqueException();
+		}else {
+			this.estoque -= quantidade;
 		}		
 	}
 

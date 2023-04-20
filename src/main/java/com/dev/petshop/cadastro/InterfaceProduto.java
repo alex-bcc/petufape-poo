@@ -12,11 +12,17 @@ public interface InterfaceProduto {
 	
 	List<Produto> procurarProdutoSetor(Setor setor);
 	
+	Produto atualizarProduto(Produto produto);
+	
 	Produto procurarProdutoUnico(String nome);
+	
+	Produto procurarProdutoId(int id);
 	
 	void deletarProduto(int id);
 	
-	Produto salvarProduto(Produto entity);
+	Produto salvarProduto(Produto entity) throws ProdutoDuplicadoException;
 	
 	List<Produto> listarProduto();
+	
+	List<Produto> listarProdutoDepartamentoSetor(Departamento departamento, Setor setor);
 }

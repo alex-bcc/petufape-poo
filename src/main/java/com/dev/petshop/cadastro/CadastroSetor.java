@@ -14,10 +14,6 @@ public class CadastroSetor implements InterfaceSetor{
 	@Autowired
 	private ColecaoSetor colecaoSetor;
 	
-	@Override
-	public List<Setor> procurarSetor(String nome){
-		return colecaoSetor.findByNomeContaining(nome);
-	}
 	
 	@Override
 	public void deletarSetor(int id) {
@@ -32,5 +28,15 @@ public class CadastroSetor implements InterfaceSetor{
 	@Override
 	public List<Setor> listarSetor() {
 		return colecaoSetor.findAll();
+	}
+
+	@Override
+	public Setor procurarSetorUnico(String nome) {
+		return colecaoSetor.findByNome(nome);
+	}
+
+	@Override
+	public Setor procurarSetorId(int id) {
+		return colecaoSetor.findById(id);
 	}
 }

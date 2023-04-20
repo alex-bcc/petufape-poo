@@ -9,10 +9,11 @@ import org.springframework.stereotype.Service;
 import com.dev.petshop.basica.Adm;
 import com.dev.petshop.basica.Compra;
 import com.dev.petshop.basica.Departamento;
+import com.dev.petshop.basica.Item;
 import com.dev.petshop.basica.Produto;
+import com.dev.petshop.basica.ReduzirEstoqueException;
 import com.dev.petshop.basica.ReporEstoqueException;
 import com.dev.petshop.basica.Setor;
-import com.dev.petshop.basica.Usuario;
 import com.dev.petshop.cadastro.DepartamentoDuplicadoException;
 import com.dev.petshop.cadastro.InterfaceAdm;
 import com.dev.petshop.cadastro.InterfaceCompra;
@@ -20,6 +21,7 @@ import com.dev.petshop.cadastro.InterfaceDepartamento;
 import com.dev.petshop.cadastro.InterfaceProduto;
 import com.dev.petshop.cadastro.InterfaceSetor;
 import com.dev.petshop.cadastro.InterfaceUsuario;
+import com.dev.petshop.cadastro.ProdutoDuplicadoException;
 
 @Service
 public class Petshop {
@@ -33,8 +35,6 @@ public class Petshop {
 	private InterfaceProduto cadastroProduto;
 	@Autowired
 	private InterfaceSetor cadastroSetor;
-	@Autowired
-	private InterfaceUsuario cadastroUsuario;
 	
 	public Adm procurarAdm(String login) {
 		return cadastroAdm.procurarAdm(login);
@@ -52,7 +52,12 @@ public class Petshop {
 	public Compra procurarCompra(int id) {
 		return cadastroCompra.procurarCompra(id);
 	}
-	public Compra salvarCompra(Compra entity) {
+	public Compra salvarCompra(Compra entity) throws ReduzirEstoqueException {
+		for(Item i : entity.getItem()) {
+			i.setProduto(cadastroProduto.procurarProdutoId(i.getProduto().getId()));
+			i.getProduto().reduzirProduto(i.getQuantidade());
+		}	
+		entity.calcularTotal();
 		return cadastroCompra.salvarCompra(entity);
 	}
 	public List<Compra> listarCompra() {
@@ -62,15 +67,14 @@ public class Petshop {
 	public List<Departamento> procurarDepartamento(String nome) {
 		return cadastroDepartamento.procurarDepartamento(nome);
 	}
+	
+	public Departamento procurarDepartamentoId(int id) {
+		return cadastroDepartamento.procurarDepartamentoId(id);
+	}
 	public void deletarDepartamento(int id) {
 		cadastroDepartamento.deletarDepartamento(id);
 	}
 	public Departamento salvarDepartamento(Departamento entity) throws DepartamentoDuplicadoException{
-		try {
-			return cadastroDepartamento.salvarDepartamento(entity);
-		}catch(DepartamentoDuplicadoException e) {
-			System.out.print(e.getMessage());
-		}
 		return cadastroDepartamento.salvarDepartamento(entity);
 	}
 	public List<Departamento> listarDepartamento() {
@@ -87,26 +91,43 @@ public class Petshop {
 	public Produto procurarProdutoUnico(String nome){
 		return cadastroProduto.procurarProdutoUnico(nome);
 	}
+	public Produto procurarProdutoId(int id){
+		return cadastroProduto.procurarProdutoId(id);
+	}
+	
+	public List<Produto> procurarProdutoDepartamentoSetor(Integer departamento, Integer setor) throws parametrosInvalidosException{
+		if(departamento < 0 && setor < 0) {
+			throw new parametrosInvalidosException();
+		}else {
+			return cadastroProduto.listarProdutoDepartamentoSetor(procurarDepartamentoId(departamento),procurarSetorId(setor));
+		}
+	}
 	
 	public void deletarProduto(int id) {
 		cadastroProduto.deletarProduto(id);
 	}
-	public Produto salvarProduto(Produto entity) {
+	public Produto salvarProduto(Produto entity) throws ProdutoDuplicadoException {
 		return cadastroProduto.salvarProduto(entity);
 	}
 	public List<Produto> listarProduto() {
 		return cadastroProduto.listarProduto();
 	}
-	public void reporEstoque (int quantidade,Produto produto) throws ReporEstoqueException {
-		try {
-			produto.reporProduto(quantidade);
-		}catch(ReporEstoqueException e) {
-			System.out.print(e.getMessage());
-		}
+	public Produto reporEstoque (int quantidade,Integer produto) throws ReporEstoqueException, produtoInvalidoException{
+			if(produto > 0) {
+			Produto p = procurarProdutoId(produto);
+			p.reporProduto(quantidade);
+			return atualizarProduto(p);
+			}else {
+				throw new produtoInvalidoException();
+			}
+			
 	}
 	
-	public List<Setor> procurarSetor(String nome){
-		return cadastroSetor.procurarSetor(nome);
+	public Setor procurarSetor(String nome){
+		return cadastroSetor.procurarSetorUnico(nome);
+	}
+	public Setor procurarSetorId(int id){
+		return cadastroSetor.procurarSetorId(id);
 	}
 	public void deletarSetor(int id) {
 		cadastroSetor.deletarSetor(id);
@@ -117,18 +138,9 @@ public class Petshop {
 	public List<Setor> listarSetor() {
 		return cadastroSetor.listarSetor();
 	}
+	public Produto atualizarProduto(Produto produto) {
+		return cadastroProduto.atualizarProduto(produto);
+	}
 	
-	public Usuario procurarUsuario(String email) {
-		return cadastroUsuario.procurarUsuario(email);
-	}
-	public void deletarUsuario(String email) {
-		cadastroUsuario.deletarUsuario(email);
-	}
-	public Usuario salvarUsuario(Usuario entity) {
-		return cadastroUsuario.salvarUsuario(entity);
-	}
-	public List<Usuario> listarUsuario() {
-		return cadastroUsuario.listarUsuario();
-	}
 }
 	

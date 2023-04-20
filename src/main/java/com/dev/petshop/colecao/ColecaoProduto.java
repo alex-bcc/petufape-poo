@@ -13,9 +13,13 @@ import com.dev.petshop.basica.Setor;
 public interface ColecaoProduto 
 	extends JpaRepository<Produto, Integer>{
 	
-	public List<Produto> findByNomeContaining(Departamento departamento);
+	public List<Produto> findByNomeContaining(String nome);
+	
+	public List<Produto> findByDepartamentoAndSetor(Departamento departamento, Setor setor);
 	
 	public List<Produto> findByNomeContaining(Setor setor);
 	
-	public Produto findByNomeUnicoContaining(String nome);
+	public Produto findByNome(String nome);
+	
+	public Produto findById(int id);
 }

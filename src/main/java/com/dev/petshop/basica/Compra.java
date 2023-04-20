@@ -1,13 +1,14 @@
 package com.dev.petshop.basica;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 @Entity
@@ -16,15 +17,16 @@ public class Compra {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@ManyToOne
-	private Usuario usuario;
-	
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL)
 	private List<Item> item;
+	
+	private Date dataCompra;
 	
 	private BigDecimal precoTotalDaCompra;
 	
-	public Compra() {}
+	public Compra() {
+		dataCompra= new Date();
+	}
 
 	public int getId() {
 		return id;
@@ -34,12 +36,12 @@ public class Compra {
 		this.id = id;
 	}
 
-	public Usuario getUsuario() {
-		return usuario;
+	public List<Item> getItem() {
+		return item;
 	}
 
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
+	public void setItem(List<Item> item) {
+		this.item = item;
 	}
 
 	public BigDecimal getPrecoTotalDaCompra() {
@@ -54,5 +56,13 @@ public class Compra {
 		for(Item it: item) {
 			precoTotalDaCompra = precoTotalDaCompra.add(it.calcularSubProduto());
 		}
+	}
+
+	public Date getDataCompra() {
+		return dataCompra;
+	}
+
+	public void setDataCompra(Date dataCompra) {
+		this.dataCompra = dataCompra;
 	}
 }
